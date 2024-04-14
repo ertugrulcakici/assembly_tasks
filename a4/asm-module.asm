@@ -218,10 +218,13 @@ modulo_0:
     je .end
     mov ecx, [r8 + 4*r11] ; ecx = tp_array[i]
     xor edx, edx
-    div r10d
-    cmp edx, 0
+    mov edx, ecx          ; Load current array element into edx
+    xor ecx, ecx
+    mov ecx, r10d         ; Load divisor into ecx
+    div ecx               ; Divide edx by ecx
+    cmp edx, 0            ; Check if remainder is zero
     jne .continue
-    inc eax
+    inc eax               ; Increment count if divisible
 
 .continue:
     inc r11
