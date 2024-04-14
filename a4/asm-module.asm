@@ -113,6 +113,7 @@ up_low:
 
 ; void power(int *tp_array, int t_N, int t_X)
 ; Compute sequence power of X to N. If result overflow, set result to 0.
+
 power:
     push rbp
     mov rbp, rsp
@@ -138,7 +139,7 @@ power:
     jo .overflow
     
 .next:
-    shl [r8 + 4*r11], 1 ; tp_array[i] <<= 1
+    shl dword [r8 + 4*r11], 1 ; tp_array[i] <<= 1
     jo .overflow
     shr ecx, 1
     jnz .power_loop
