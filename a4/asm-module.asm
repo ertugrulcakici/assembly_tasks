@@ -138,7 +138,7 @@ power:
     jo .overflow
     
 .next:
-    shl dword [r8 + 4*r11], 1 ; tp_array[i] <<= 1
+    shl [r8 + 4*r11], 1 ; tp_array[i] <<= 1
     jo .overflow
     shr ecx, 1
     jnz .power_loop
@@ -226,6 +226,5 @@ modulo_0:
     jmp .continue
     
 .end:
-    mov rsp, rbp
     pop rbp
     ret
