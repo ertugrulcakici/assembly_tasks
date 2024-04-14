@@ -26,18 +26,23 @@ position_max:
 ; extern void change_sign(char *tp_array, int t_len);
 ; Change sign of all negative numbers in array
 change_sign:
-    xor rcx, rcx ; i = 0
-.loop:
-    cmp rcx, rsi ; i < t_len
-    jge .end ; if not, return
-    cmp byte [rdi + rcx], 0 ; if arr[i] >= 0
-    jge .skip ; skip this element
-    neg byte [rdi + rcx] ; change sign
+    mov rdi, rdi  ; pointer to the array
+    mov rsi, rsi  ; length of the array
+    mov rcx, 0    ; index counter
+
+.back:
+    cmp rcx, rsi   ; compare counter with length
+    jge .done      ; if counter >= length, we're done
+    mov al, [rdi + rcx] ; load current element (byte)
+    test al, al    ; test if the number is negative
+    jge .skip      ; if positive or zero, skip
+    neg byte [rdi + rcx] ; negate the value
+
 .skip:
-    inc rcx ; i++
-    jmp .loop
-.end:
-    ret
+    inc rcx         ; increment index
+    jmp .back       ; go back to the loop start
+.done:
+    ret             ; return
 
 ; extern long highest_bit(long t_number);
 ; Find highest bit in long. 

@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
 }
 void for_position_max()
 {
-    int arr[] = {-3, -1, -4, -2, 5, 3, 1, 4, 2, -5};
+    int arr[] = {-3, -1, -4, -2, 5, 3, 1, 4, 2, -5}; // index of -5 is 9
     int len = sizeof(arr) / sizeof(arr[0]);
     int result = position_max(arr, len);
     printf("Position of the lowest negative number: %d\n", result);
