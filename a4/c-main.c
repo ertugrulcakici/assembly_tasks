@@ -31,29 +31,6 @@ int main(int argc, char const *argv[])
     for_modulo_0();
 }
 
-void for_factorial()
-{
-    long num = 5;
-    long result = factorial(num);
-
-    if (result == -1)
-    {
-        printf("Overflow occurred");
-    }
-    else
-    {
-        printf("Factorial of %ld is %ld\n", num, result);
-    }
-}
-
-void for_hex2int()
-{
-    const char *hexString = "CAFE";
-    int result = hex2int(hexString);
-
-    printf("The hexadecimal string %s is %d in decimal.\n", hexString, result);
-}
-
 void for_power()
 {
     int arr[] = {1, 2, 3, 4, 5};
@@ -75,6 +52,21 @@ void for_up_low()
     printf("String in lower case: %s\n", str);
 }
 
+void for_factorial()
+{
+    long num = 5;
+    long result = factorial(num);
+
+    if (result == -1)
+    {
+        printf("Overflow occurred");
+    }
+    else
+    {
+        printf("Factorial of %ld is %ld\n", num, result);
+    }
+}
+
 void for_clean_no_prime()
 {
     int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -86,6 +78,14 @@ void for_clean_no_prime()
         printf("%d ", arr[i]);
     }
     printf("\n");
+}
+
+void for_hex2int()
+{
+    const char *hexString = "CAFE";
+    int result = hex2int(hexString);
+
+    printf("The hexadecimal string %s is %d in decimal.\n", hexString, result);
 }
 
 void for_modulo_0()
