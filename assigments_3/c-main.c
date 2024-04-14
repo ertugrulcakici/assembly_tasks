@@ -34,5 +34,5 @@ void for_highest_bit()
 {
     // 0b101 -> 3
     long result = highest_bit(5);
-    printf("Highest bit: %d\n", result);
+    printf("Highest bit: %ld\n", result);
 }
