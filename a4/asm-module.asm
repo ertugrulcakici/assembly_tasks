@@ -8,7 +8,6 @@ global modulo_0
 global power
 global up_low
 
-
 factorial:
     push rbp                
     mov rbp, rsp            
@@ -39,15 +38,15 @@ factorial:
     jmp .end_loop
 
 hex2int:
-    push ebp                ; save old base pointer
-    mov ebp, esp            ; establish new base pointer
-    mov edx, [ebp + 8]      ; load pointer to the hex string into edx
+    push rbp                ; save old base pointer
+    mov rbp, rsp            ; establish new base pointer
+    mov rdx, rdi            ; load pointer to the hex string into rdx
 
     xor eax, eax            ; clear EAX for the result
     xor ecx, ecx            ; clear ECX, will use it to hold the character
 
 .next_char:
-    movzx ecx, byte [edx]   ; Load the next byte (character) of the string into ECX
+    movzx ecx, byte [rdx]   ; Load the next byte (character) of the string into ECX
     test ecx, ecx           ; Test if it's the null terminator (0)
     jz .done                ; If zero, we're done
 
@@ -63,11 +62,11 @@ hex2int:
     shl eax, 4              ; Shift the current result left by 4 bits to make room
     or eax, ecx             ; OR it with the new digit to add it to the result
 
-    inc edx                 ; Move to the next character in the string
+    inc rdx                 ; Move to the next character in the string
     jmp .next_char          ; Repeat the loop
 
 .done:
-    pop ebp                 ; restore old base pointer
+    pop rbp                 ; restore old base pointer
     ret                     ; Return with the result in EAX
 
 clean_no_prime:
@@ -107,7 +106,6 @@ clean_no_prime:
     pop rbp
     ret
 
-
 modulo_0:
     push rbp
     mov rbp, rsp
@@ -140,7 +138,8 @@ modulo_0:
     pop rbp
     ret
 
-
+; void power(int *tp_array, int t_N, int t_X)
+; Compute sequence power of X to N. If result overflow, set result to 0.
 power:
     push rbp
     mov rbp, rsp
@@ -166,12 +165,12 @@ power:
     jo .overflow
     
 .next:
-    shl [r8 + 4*r11], 1
+    shl dword [r8 + 4*r11], 1
     jo .overflow
     shr ecx, 1
     jnz .power_loop
     
-    mov [r8 + 4*r11], eax
+    mov dword [r8 + 4*r11], eax
     inc r11
     jmp .loop
     
