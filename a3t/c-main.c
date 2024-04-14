@@ -15,14 +15,14 @@ int main(int argc, char const *argv[])
 }
 void for_position_max()
 {
-    int arr[] = {-3, -1, -4, -2, 5, 3, 1, 4, 2, -5}; // index of -5 is 9
+    int arr[] = {-3, -1, -4, -2, -5, 3, 1, 4, 2, -6}; // -6 is the lowest negative number at position 9
     int len = sizeof(arr) / sizeof(arr[0]);
     int result = position_max(arr, len);
     printf("Position of the lowest negative number: %d\n", result);
 }
 void for_change_sign()
 {
-    char carr[] = {10, -20, 30, 40, -50, 60};
+    char carr[] = {-10, 20, -30, 40, -50, 60};
     int len = sizeof(carr) / sizeof(carr[0]);
     change_sign(carr, len);
     for (int i = 0; i < len; i++)
@@ -34,6 +34,6 @@ void for_change_sign()
 void for_highest_bit()
 {
     // 0b101 -> 3
-    long result = highest_bit(32);
+    long result = highest_bit(33);
     printf("Highest bit: %ld\n", result);
 }
