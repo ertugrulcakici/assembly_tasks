@@ -48,7 +48,7 @@ void for_power()
 void for_up_low()
 {
     char str[] = "Hello World";
-    up_low(str, 1);
+    up_low(str, 0);
     printf("String in lower case: %s\n", str);
 }
 
@@ -97,3 +97,24 @@ void for_modulo_0()
 
     printf("Numbers in array that are divisible by %d: %d\n", M, result);
 }
+
+// expected output:
+
+// Assignment 4
+// For power
+// 1 4 9 16 25
+//
+// For up_low
+// String in lower case: hello world
+
+// For factorial
+// Factorial of 5 is 120
+//
+// For clean_no_prime
+// 0 2 3 0 5 0 7 0 0 0
+//
+// For hex2int
+// The hexadecimal string CAFE is 51966 in decimal.
+//
+// For modulo_0
+// Numbers in array that are divisible by 3: 3
