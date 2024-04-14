@@ -29,10 +29,11 @@ void for_change_sign()
     {
         printf("%d ", carr[i]);
     }
+    printf("\n");
 }
 void for_highest_bit()
 {
     // 0b101 -> 3
-    long result = highest_bit(5);
+    long result = highest_bit(3);
     printf("Highest bit: %ld\n", result);
 }
