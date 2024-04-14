@@ -210,6 +210,8 @@ modulo_0:
     mov r8, rdi       ; r8 = tp_array
     mov r9d, esi      ; r9d = t_N
     mov r10d, edx     ; r10d = t_M
+    test r10d, r10d   ; Check if M is zero
+    je .end           ; If M is zero, exit to avoid division by zero
     xor eax, eax      ; eax = count = 0
     xor r11, r11      ; r11 = i = 0
 
@@ -217,11 +219,9 @@ modulo_0:
     cmp r11d, r9d
     je .end
     mov ecx, [r8 + 4*r11] ; ecx = tp_array[i]
-    xor edx, edx
-    mov edx, ecx          ; Load current array element into edx
-    xor ecx, ecx
-    mov ecx, r10d         ; Load divisor into ecx
-    div ecx               ; Divide edx by ecx
+    mov edx, 0            ; Clear edx for division
+    mov eax, ecx          ; Load current array element into eax
+    div r10d              ; Divide eax by r10d (M)
     cmp edx, 0            ; Check if remainder is zero
     jne .continue
     inc eax               ; Increment count if divisible
