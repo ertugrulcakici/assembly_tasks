@@ -17,17 +17,17 @@ void for_modulo_0();
 
 int main(int argc, char const *argv[])
 {
-    printf("Assignment 4\nFor power");
+    printf("Assignment 4\nFor power\n");
     for_power();
-    printf("\nFor up_low");
+    printf("\nFor up_low\n");
     for_up_low();
-    printf("\nFor factorial");
+    printf("\nFor factorial\n");
     for_factorial();
-    printf("\nFor clean_no_prime");
+    printf("\nFor clean_no_prime\n");
     for_clean_no_prime();
-    printf("\nFor hex2int");
+    printf("\nFor hex2int\n");
     for_hex2int();
-    printf("\nFor modulo_0");
+    printf("\nFor modulo_0\n");
     for_modulo_0();
 }
 
