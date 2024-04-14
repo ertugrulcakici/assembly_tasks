@@ -68,123 +68,6 @@ hex2int:
 .done:
     pop rbp                 ; restore old base pointer
     ret                     ; Return with the result in EAX
-
-clean_no_prime:
-    push rbp
-    mov rbp, rsp
-    
-    mov r8, rdi ; r8 = tp_array
-    mov r9d, esi ; r9d = t_N
-    xor r10, r10 ; r10 = i = 0
-    
-.loop:
-    cmp r10d, r9d
-    je .end
-    
-    mov eax, [r8 + 4*r10] ; eax = tp_array[i]
-    cmp eax, 2
-    je .is_prime
-    
-    ; Check if number is prime
-    mov ecx, 2
-.is_prime_loop:
-    cmp ecx, eax
-    je .is_prime
-    test eax, ecx
-    jz .set_to_zero
-    inc ecx
-    jmp .is_prime_loop
-    
-.set_to_zero:
-    mov dword [r8 + 4*r10], 0
-    
-.is_prime:
-    inc r10
-    jmp .loop
-    
-.end:
-    pop rbp
-    ret
-
-modulo_0:
-    push rbp
-    mov rbp, rsp
-    
-    mov r8, rdi ; r8 = tp_array
-    mov r9d, esi ; r9d = t_N
-    mov r10d, edx ; r10d = t_M
-    xor eax, eax ; eax = count = 0
-    xor r11, r11 ; r11 = i = 0
-    
-.loop:
-    cmp r11d, r9d
-    je .end
-    
-    mov ecx, [r8 + 4*r11] ; ecx = tp_array[i]
-    xor edx, edx
-    div r10d
-    cmp edx, 0
-    je .increment
-    
-.continue:
-    inc r11
-    jmp .loop
-    
-.increment:
-    inc eax
-    jmp .continue
-    
-.end:
-    pop rbp
-    ret
-
-; void power(int *tp_array, int t_N, int t_X)
-; Compute sequence power of X to N. If result overflow, set result to 0.
-power:
-    push rbp
-    mov rbp, rsp
-    
-    mov r8, rdi ; r8 = tp_array
-    mov r9d, esi ; r9d = t_N
-    mov r10d, edx ; r10d = t_X
-    xor r11, r11 ; r11 = i = 0
-    
-.loop:
-    cmp r11d, r9d
-    je .end
-    
-    mov eax, [r8 + 4*r11] ; eax = tp_array[i]
-    mov ecx, r10d ; ecx = t_X
-    
-    ; Compute power
-    xor edx, edx
-.power_loop:
-    test ecx, 1
-    jz .next
-    imul eax, [r8 + 4*r11]
-    jo .overflow
-    
-.next:
-    shl dword [r8 + 4*r11], 1
-    jo .overflow
-    shr ecx, 1
-    jnz .power_loop
-    
-    mov dword [r8 + 4*r11], eax
-    inc r11
-    jmp .loop
-    
-.overflow:
-    mov dword [r8 + 4*r11], 0
-    inc r11
-    jmp .loop
-    
-.end:
-    pop rbp
-    ret
-
-; void up_low(char *tp_str, int t_up_low)
-; Convert string to upper or lower case optionally.
 up_low:
     push rbp
     mov rbp, rsp
@@ -224,5 +107,125 @@ up_low:
     jmp .loop
     
 .end:
+    pop rbp
+    ret
+
+
+; void power(int *tp_array, int t_N, int t_X)
+; Compute sequence power of X to N. If result overflow, set result to 0.
+power:
+    push rbp
+    mov rbp, rsp
+    
+    mov r8, rdi ; r8 = tp_array
+    mov r9d, esi ; r9d = t_N
+    mov r10d, edx ; r10d = t_X
+    xor r11, r11 ; r11 = i = 0
+    
+.loop:
+    cmp r11d, r9d
+    je .end
+    
+    mov eax, [r8 + 4*r11] ; eax = tp_array[i]
+    mov ecx, r10d ; ecx = t_X
+    
+    ; Compute power
+    xor edx, edx
+.power_loop:
+    test ecx, 1
+    jz .next
+    imul eax, [r8 + 4*r11] ; eax *= tp_array[i]
+    jo .overflow
+    
+.next:
+    shl dword [r8 + 4*r11], 1 ; tp_array[i] <<= 1
+    jo .overflow
+    shr ecx, 1
+    jnz .power_loop
+    
+    mov [r8 + 4*r11], eax ; tp_array[i] = eax
+    inc r11
+    jmp .loop
+    
+.overflow:
+    mov dword [r8 + 4*r11], 0 ; tp_array[i] = 0
+    inc r11
+    jmp .loop
+    
+.end:
+    pop rbp
+    ret
+
+; void clean_no_prime(int *tp_array, int t_N)
+; Set to zero all numbers in int array which are not prime.
+clean_no_prime:
+    push rbp
+    mov rbp, rsp
+    
+    mov r8, rdi ; r8 = tp_array
+    mov r9d, esi ; r9d = t_N
+    xor r10, r10 ; r10 = i = 0
+    
+.loop:
+    cmp r10d, r9d
+    je .end
+    
+    mov eax, [r8 + 4*r10] ; eax = tp_array[i]
+    
+    ; Check if number is prime
+    cmp eax, 2
+    je .is_prime
+    mov ecx, 2
+.is_prime_loop:
+    cmp ecx, eax
+    je .is_prime
+    test eax, ecx
+    jz .set_to_zero
+    inc ecx
+    jmp .is_prime_loop
+    
+.set_to_zero:
+    mov dword [r8 + 4*r10], 0 ; tp_array[i] = 0
+    
+.is_prime:
+    inc r10
+    jmp .loop
+    
+.end:
+    pop rbp
+    ret
+
+; int modulo_0(int *tp_array, int t_N, int t_M)
+; How many numbers in array has modulo of M equal to zero?
+modulo_0:
+    push rbp
+    mov rbp, rsp
+    
+    mov r8, rdi ; r8 = tp_array
+    mov r9d, esi ; r9d = t_N
+    mov r10d, edx ; r10d = t_M
+    xor eax, eax ; eax = count = 0
+    xor r11, r11 ; r11 = i = 0
+    
+.loop:
+    cmp r11d, r9d
+    je .end
+    
+    mov ecx, [r8 + 4*r11] ; ecx = tp_array[i]
+    xor edx, edx
+    div r10d
+    cmp edx, 0
+    je .increment
+    
+.continue:
+    inc r11
+    jmp .loop
+    
+.increment:
+    inc eax ; count++
+    jmp .continue
+    
+.end:
+    mov rsp, rbp
     pop rbp
     ret
