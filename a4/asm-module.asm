@@ -199,33 +199,29 @@ clean_no_prime:
 ; int modulo_0(int *tp_array, int t_N, int t_M)
 ; How many numbers in array has modulo of M equal to zero?
 modulo_0:
+
     push rbp
     mov rbp, rsp
-    
-    mov r8, rdi ; r8 = tp_array
-    mov r9d, esi ; r9d = t_N
-    mov r10d, edx ; r10d = t_M
-    xor eax, eax ; eax = count = 0
-    xor r11, r11 ; r11 = i = 0
-    
+    mov r8, rdi       ; r8 = tp_array
+    mov r9d, esi      ; r9d = t_N
+    mov r10d, edx     ; r10d = t_M
+    xor eax, eax      ; eax = count = 0
+    xor r11, r11      ; r11 = i = 0
+
 .loop:
     cmp r11d, r9d
     je .end
-    
     mov ecx, [r8 + 4*r11] ; ecx = tp_array[i]
     xor edx, edx
     div r10d
     cmp edx, 0
-    je .increment
-    
+    jne .continue
+    inc eax
+
 .continue:
     inc r11
     jmp .loop
-    
-.increment:
-    inc eax ; count++
-    jmp .continue
-    
+
 .end:
     pop rbp
     ret
