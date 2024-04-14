@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 extern int position_max(int *tp_array, int t_len);  // Find position of the maximum negative number in array. (return -1 if there is no negative number) (-1, -10, -100 => -1)
 extern void change_sign(char *tp_array, int t_len); // Change sign of all negative numbers in array char carrray[] = { -10, 20, -30, 40, -50, 60, ... };
 extern int highest_bit(long t_number);              // Find highest bit in long. // find how many time we have to shift to right to get 0
