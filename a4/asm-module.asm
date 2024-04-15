@@ -209,7 +209,7 @@ modulo_0:
     mov r8, rdi       ; r8 = tp_array
     mov r9d, esi      ; r9d = t_N
     mov r10d, edx     ; r10d = t_M
-    cmp r10d, 0   ; Check if M is zero
+    test r10d, r10d   ; Check if M is zero
     je .end           ; If M is zero, exit to avoid division by zero
     xor eax, eax      ; eax = count = 0
     xor r11, r11      ; r11 = i = 0
