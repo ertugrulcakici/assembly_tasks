@@ -8,7 +8,7 @@ global modulo_0
 global power
 global up_low
 
-factoriel:
+factorial:
   	
     mov rax, 1 
     mov rcx, rdi 
