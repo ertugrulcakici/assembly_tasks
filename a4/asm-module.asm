@@ -149,9 +149,6 @@ factorial:
 ; void clean_no_prime(int *tp_array, int t_N)
 ; Set to zero all numbers in int array which are not prime.
 clean_no_prime:
-    push rbp
-    mov rbp, rsp
-
     mov r8, rdi        ; r8 = tp_array
     mov r9d, esi       ; r9d = t_N
     xor r10, r10       ; r10 = i = 0
@@ -168,22 +165,24 @@ clean_no_prime:
     cmp eax, 3
     je .is_prime
 
-    mov edx, 0
+    ; Check divisibility starting from 2
     mov ecx, 2
+    mov edx, 0
     div ecx
     cmp edx, 0
     je .set_to_zero        ; Divisible by 2
 
+    ; Check divisibility for odd numbers starting from 3
     mov ecx, 3
 .loop_check:
     mov edx, 0
-    mov eax, [r8 + 4*r10]
+    mov eax, [r8 + 4*r10] ; reload eax as it was modified by div
     div ecx
     cmp edx, 0
     je .set_to_zero        ; Divisible by current divisor
-    add ecx, 2            ; Increment to next odd number
+    add ecx, 2             ; Increment to check next odd number
     cmp ecx, eax
-    jb .loop_check         ; Continue if divisor is less than number
+    jb .loop_check         ; Continue if divisor is less than the number
 
 .is_prime:
     inc r10
@@ -195,8 +194,8 @@ clean_no_prime:
     jmp .loop
 
 .end:
-    pop rbp
     ret
+
 
 ; int modulo_0(int *tp_array, int t_N, int t_M)
 ; How many numbers in array has modulo of M equal to zero?
