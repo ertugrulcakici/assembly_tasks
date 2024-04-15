@@ -205,12 +205,11 @@ clean_no_prime:
 ; How many numbers in array has modulo of M equal to zero?
 modulo_0:
 
-    push rbp
     mov rbp, rsp
     mov r8, rdi       ; r8 = tp_array
     mov r9d, esi      ; r9d = t_N
     mov r10d, edx     ; r10d = t_M
-    test r10d, r10d   ; Check if M is zero
+    cmp r10d, r10d   ; Check if M is zero
     je .end           ; If M is zero, exit to avoid division by zero
     xor eax, eax      ; eax = count = 0
     xor r11, r11      ; r11 = i = 0
@@ -231,5 +230,4 @@ modulo_0:
     jmp .loop
 
 .end:
-    pop rbp
     ret
