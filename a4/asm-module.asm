@@ -160,17 +160,20 @@ clean_no_prime:
     mov eax, [r8 + 4*r10] ; eax = tp_array[i]
     cmp eax, 2
     je .is_prime
+    cmp eax, 3
+    je .is_prime
     
     ; Check if number is prime
-    mov ecx, 2
+    mov ecx, 5
+    xor edx, edx
 .is_prime_loop:
-    cmp ecx, eax
-    je .is_prime
+    cmp eax, ecx
+    jb .is_prime
     mov edx, 0
     div ecx
     cmp edx, 0
     jz .set_to_zero
-    inc ecx
+    add ecx, 2
     jmp .is_prime_loop
     
 .set_to_zero:
