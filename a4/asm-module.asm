@@ -8,34 +8,25 @@ global modulo_0
 global power
 global up_low
 
-factorial:
-    push rbp                
-    mov rbp, rsp            
-    mov rax, rdi            
-    cmp rdi, 0              
-    je .if_zero
-    mov rcx, 1              
-
-._loop:
-    cmp rdi, rcx            
-    jle .end_loop           
-    imul rax, rcx           
-    jo .overflow            
-    inc rcx                 
-    jmp ._loop
-
-.end_loop:
-    mov rsp, rbp            
-    pop rbp                 
-    ret                     
-
-.if_zero:
-    mov rax, 1              
-    jmp .end_loop
-
+factoriel:
+  	
+    mov rax, 1 
+    mov rcx, rdi 
+.back:
+    
+   
+    cmp rcx,  0
+    je .done
+    IMUL rcx
+    dec rcx
+    cmp rdx, 0
+    jne .overflow
+    jmp .back
 .overflow:
-    mov rax, -1             
-    jmp .end_loop
+    mov rax, 0
+    
+.done:
+    ret
 
 hex2int:
     push rbp                ; save old base pointer
