@@ -205,6 +205,7 @@ clean_no_prime:
 ; How many numbers in array has modulo of M equal to zero?
 modulo_0:
 
+    push rbp
     mov rbp, rsp
     mov r8, rdi       ; r8 = tp_array
     mov r9d, esi      ; r9d = t_N
@@ -230,4 +231,5 @@ modulo_0:
     jmp .loop
 
 .end:
+    pop rbp
     ret
