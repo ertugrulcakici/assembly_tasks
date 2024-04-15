@@ -151,7 +151,7 @@ factorial:
 clean_no_prime:
     mov r8, rdi        ; Copy the first argument (pointer to array) to r8.
     mov r9d, esi       ; Copy the second argument (number of elements in array) to r9d.
-    xor r10, r10       ; Zero out r10, which will be used as the loop index i.
+    mov r10, 0       ; Zero out r10, which will be used as the loop index i.
 
 .loop:
     cmp r10d, r9d      ; Compare the loop index i (r10d) with the number of elements N (r9d).
