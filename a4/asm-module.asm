@@ -149,45 +149,38 @@ factorial:
 ; void clean_no_prime(int *tp_array, int t_N)
 ; Set to zero all numbers in int array which are not prime.
 clean_no_prime:
-
-    push rbp
-    mov rbp, rsp
-    mov r8, rdi       ; r8 = tp_array
-    mov r9d, esi      ; r9d = t_N
-    xor r10, r10      ; r10 = i = 0
-
+    mov r8, rdi ; r8 = tp_array
+    mov r9d, esi ; r9d = t_N
+    xor r10, r10 ; r10 = i = 0
+    
 .loop:
     cmp r10d, r9d
     je .end
-
+    
     mov eax, [r8 + 4*r10] ; eax = tp_array[i]
-    cmp eax, 1
-    jle .set_to_zero
-
     cmp eax, 2
     je .is_prime
-
+    
+    ; Check if number is prime
     mov ecx, 2
-
 .is_prime_loop:
     cmp ecx, eax
-    jge .is_prime
+    je .is_prime
     mov edx, 0
     div ecx
     cmp edx, 0
-    je .set_to_zero
+    jz .set_to_zero
     inc ecx
     jmp .is_prime_loop
-
+    
 .set_to_zero:
-    mov dword [r8 + 4*r10], 0
-
+    mov dword [r8 + 4*r10], 0 ; tp_array[i] = 0
+    
 .is_prime:
     inc r10
     jmp .loop
-
+    
 .end:
-    pop rbp
     ret
 
 ; int modulo_0(int *tp_array, int t_N, int t_M)
