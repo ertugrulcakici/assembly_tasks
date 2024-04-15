@@ -168,42 +168,36 @@ clean_no_prime:
     cmp eax, 3
     je .is_prime
 
-    ; Check divisibility by 2 and 3 first
     mov edx, 0
     mov ecx, 2
     div ecx
     cmp edx, 0
-    je .set_to_zero
-    mov edx, 0
-    mov ecx, 3
-    mov edx, eax
-    div ecx
-    cmp edx, 0
-    je .set_to_zero
+    je .set_to_zero        ; Divisible by 2
 
-    ; Check if number is prime for numbers greater than 3
-    mov ecx, 5
-.is_prime_loop:
+    mov ecx, 3
+.loop_check:
     mov edx, 0
     mov eax, [r8 + 4*r10]
-    cmp ecx, eax
-    jge .is_prime
     div ecx
     cmp edx, 0
-    je .set_to_zero
-    add ecx, 2
-    jmp .is_prime_loop
+    je .set_to_zero        ; Divisible by current divisor
+    add ecx, 2            ; Increment to next odd number
+    cmp ecx, eax
+    jb .loop_check         ; Continue if divisor is less than number
+
+.is_prime:
+    inc r10
+    jmp .loop
 
 .set_to_zero:
     mov dword [r8 + 4*r10], 0 ; tp_array[i] = 0
-
-.is_prime:
     inc r10
     jmp .loop
 
 .end:
     pop rbp
     ret
+
 ; int modulo_0(int *tp_array, int t_N, int t_M)
 ; How many numbers in array has modulo of M equal to zero?
 modulo_0:
