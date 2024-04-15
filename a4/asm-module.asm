@@ -149,52 +149,42 @@ factorial:
 ; void clean_no_prime(int *tp_array, int t_N)
 ; Set to zero all numbers in int array which are not prime.
 clean_no_prime:
-    mov r8, rdi        ; r8 = tp_array
-    mov r9d, esi       ; r9d = t_N
-    xor r10, r10       ; r10 = i = 0
+    mov r8, rdi             ; Copy the first argument (pointer to array) to r8
+    mov r9d, esi            ; Copy the second argument (number of elements in array) to r9d
+    xor r10, r10            ; Zero out r10, which will be used as the loop index i
 
 .loop:
-    cmp r10d, r9d
-    je .end
+    cmp r10d, r9d           ; Compare the loop index i (r10d) with the number of elements N (r9d)
+    je .end                 ; Jump to .end if i == N, ending the loop if all elements are checked
+    mov eax, [r8 + 4*r10]   ; Move the value at position i in the array to eax
+    cmp eax, 2              ; Compare the current array value with 2
+    jb .set_to_zero         ; If the value is less than 2, jump to set_to_zero (not a prime number)
+    cmp eax, 3              ; Compare the current array value with 3
+    je .is_prime            ; If the value is 3, jump to is_prime (3 is a prime number)
+    test eax, 1             ; Check if the current array value is odd
+    jz .set_to_zero         ; If the value is even, jump to set_to_zero (not a prime number)
 
-    mov eax, [r8 + 4*r10] ; eax = tp_array[i]
-    cmp eax, 1
-    je .set_to_zero        ; 1 is not a prime
-    cmp eax, 2
-    je .is_prime
-    cmp eax, 3
-    je .is_prime
-
-    ; Check divisibility starting from 2
-    mov ecx, 2
-    mov edx, 0
-    div ecx
-    cmp edx, 0
-    je .set_to_zero        ; Divisible by 2
-
-    ; Check divisibility for odd numbers starting from 3
-    mov ecx, 3
 .loop_check:
-    mov edx, 0
-    mov eax, [r8 + 4*r10] ; reload eax as it was modified by div
-    div ecx
-    cmp edx, 0
-    je .set_to_zero        ; Divisible by current divisor
-    add ecx, 2             ; Increment to check next odd number
-    cmp ecx, eax
-    jb .loop_check         ; Continue if divisor is less than the number
+    mov edx, 0              ; Zero out edx before division to properly setup edx:eax for div
+    mov ecx, 3              ; Set divisor to 3 for the next checks
+    div ecx                 ; Divide eax by ecx, updating eax with quotient and edx with remainder
+    cmp edx, 0              ; Check if the remainder is zero
+    je .set_to_zero         ; If remainder is 0, number is divisible by ecx, so jump to set_to_zero
+    add ecx, 2              ; Increment divisor by 2 to check the next odd number
+    cmp ecx, eax            ; Compare new divisor with the current array value
+    jb .loop_check          ; If the divisor is less than the current array value, loop to check with next divisor
 
 .is_prime:
-    inc r10
-    jmp .loop
+    inc r10                 ; Increment loop index i
+    jmp .loop               ; Jump back to the start of the loop to process the next element
 
 .set_to_zero:
-    mov dword [r8 + 4*r10], 0 ; tp_array[i] = 0
-    inc r10
-    jmp .loop
+    mov dword [r8 + 4*r10], 0 ; Set the current array element to 0 because it is not a prime
+    inc r10                 ; Increment loop index i
+    jmp .loop               ; Jump back to the start of the loop to process the next element
 
 .end:
-    ret
+    ret                     ; Return from the function
 
 
 ; int modulo_0(int *tp_array, int t_N, int t_M)
