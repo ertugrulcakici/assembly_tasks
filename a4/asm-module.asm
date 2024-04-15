@@ -167,8 +167,8 @@ clean_no_prime:
     mov ecx, 5
     xor edx, edx
 .is_prime_loop:
-    cmp eax, ecx
-    jb .is_prime
+    cmp ecx, eax
+    ja .is_prime
     mov edx, 0
     div ecx
     cmp edx, 0
