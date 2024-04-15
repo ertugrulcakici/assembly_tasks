@@ -149,43 +149,61 @@ factorial:
 ; void clean_no_prime(int *tp_array, int t_N)
 ; Set to zero all numbers in int array which are not prime.
 clean_no_prime:
-    mov r8, rdi ; r8 = tp_array
-    mov r9d, esi ; r9d = t_N
-    xor r10, r10 ; r10 = i = 0
-    
+    push rbp
+    mov rbp, rsp
+
+    mov r8, rdi        ; r8 = tp_array
+    mov r9d, esi       ; r9d = t_N
+    xor r10, r10       ; r10 = i = 0
+
 .loop:
     cmp r10d, r9d
     je .end
-    
+
     mov eax, [r8 + 4*r10] ; eax = tp_array[i]
+    cmp eax, 1
+    je .set_to_zero        ; 1 is not a prime
     cmp eax, 2
     je .is_prime
     cmp eax, 3
     je .is_prime
-    
-    ; Check if number is prime
-    mov ecx, 5
-    xor edx, edx
-.is_prime_loop:
-    cmp ecx, eax
-    ja .is_prime
+
+    ; Check divisibility by 2 and 3 first
     mov edx, 0
+    mov ecx, 2
     div ecx
     cmp edx, 0
-    jz .set_to_zero
+    je .set_to_zero
+    mov edx, 0
+    mov ecx, 3
+    mov edx, eax
+    div ecx
+    cmp edx, 0
+    je .set_to_zero
+
+    ; Check if number is prime for numbers greater than 3
+    mov ecx, 5
+.is_prime_loop:
+    mov edx, 0
+    mov eax, [r8 + 4*r10]
+    cmp ecx, eax
+    jge .is_prime
+    div ecx
+    cmp edx, 0
+    je .set_to_zero
     add ecx, 2
     jmp .is_prime_loop
-    
+
 .set_to_zero:
     mov dword [r8 + 4*r10], 0 ; tp_array[i] = 0
-    
+
 .is_prime:
     inc r10
     jmp .loop
-    
-.end:
-    ret
 
+.end:
+    pop rbp
+    ret
 ; int modulo_0(int *tp_array, int t_N, int t_M)
 ; How many numbers in array has modulo of M equal to zero?
 modulo_0:
